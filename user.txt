@@ -1,0 +1,29 @@
+class User:
+    def __init__(self, user_id, name, email):
+        self.user_id = user_id
+        self.name = name
+        self.email = email
+    
+    def __str__(self):
+        return f"User({self.user_id}, {self.name}, {self.email})"
+
+class UserRepository:
+    def __init__(self):
+        self.users = []
+    
+    def add_user(self, user):
+        self.users.append(user)
+    
+    def get_user(self, user_id):
+        return next((u for u in self.users if u.user_id == user_id), None)
+    
+    def list_users(self):
+        return self.users
+
+# Example usage
+repo = UserRepository()
+repo.add_user(User(1, "John Doe", "john@example.com"))
+repo.add_user(User(2, "Jane Smith", "jane@example.com"))
+
+for user in repo.list_users():
+    print(user)
