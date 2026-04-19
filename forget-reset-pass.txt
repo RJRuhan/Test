@@ -1,0 +1,42 @@
+// Forget Password Mock Implementation
+class ForgetPasswordMock {
+    constructor() {
+        this.resetTokens = new Map();
+    }
+
+    requestPasswordReset(email) {
+        if (!email || !email.includes('@')) {
+            return { success: false, error: 'Invalid email' };
+        }
+
+        const token = Math.random().toString(36).substring(2, 15);
+        this.resetTokens.set(token, { email, createdAt: Date.now() });
+
+        return {
+            success: true,
+            message: 'Reset link sent to email',
+            token: token
+        };
+    }
+
+    resetPassword(token, newPassword) {
+        if (!this.resetTokens.has(token)) {
+            return { success: false, error: 'Invalid token' };
+        }
+
+        if (newPassword.length < 6) {
+            return { success: false, error: 'Password too short' };
+        }
+
+        this.resetTokens.delete(token);
+
+        return {
+            success: true,
+            message: 'Password reset successfully'
+        };
+    }
+}
+
+// Usage
+const forgetPassword = new ForgetPasswordMock();
+console.log(forgetPassword.requestPasswordReset('user@example.com'));
